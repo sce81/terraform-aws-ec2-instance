@@ -6,7 +6,7 @@ Expects security groups and IAM roles to be created externally to the module.
 
 ##### Usage
 
-    module "paloalto" {
+    module "Instance" {
       source                                        = "git@github.com:sce81/tf-module-ec2-instance.git"
       count                                         = 1
       number                                        = (count.index + 1)
@@ -16,7 +16,7 @@ Expects security groups and IAM roles to be created externally to the module.
       subnet_ids                                    = data.terraform_remote_state.infra.outputs.primary_subnet_ids
       ami_id                                        = var.ami_id
       key_name                                      = module.ssh_key.key_name
-      security_group_ids                            = [module.pa-sg-pub.id]
+      security_group_ids                            = [module.instance-sg.id]
       user_data                                     = data.template_file.userdata.rendered
-      instance_profile                              = module.pa-iam.instance_profile
+      instance_profile                              = module.instance-iam.instance_profile
     }
