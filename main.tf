@@ -36,35 +36,11 @@ resource "aws_network_interface" "main" {
     )
 
 }
-resource "aws_network_interface" "management" {
-  subnet_id                             = element(var.mgmt_subnet_ids, var.number)
-  security_groups                       = var.mgmt_security_group_ids
-  source_dest_check                     = var.source_dest_check
-  
-  tags = merge(
-        local.common_tags, var.extra_tags,
-        tomap({
-            Name = "${var.env}-${var.project}-${var.name}-management-${var.number}"
-        })
-    )
-}
-resource "aws_network_interface" "private" {
-  subnet_id                             = element(var.priv_subnet_ids, var.number)
-  security_groups                       = var.priv_security_group_ids
-  source_dest_check                     = var.source_dest_check
-  
-  tags = merge(
-        local.common_tags, var.extra_tags,
-        tomap({
-            Name = "${var.env}-${var.project}-${var.name}-private-${var.number}"
-        })
-    )
-}
 
 resource "aws_eip" "public" {
   vpc                                   = true
   customer_owned_ipv4_pool              = var.customer_owned_ipv4_pool
-  network_interface                     = aws_network_interface.public.id
+  network_interface                     = aws_network_interface.main.id
 
   tags = merge(
         local.common_tags, var.extra_tags,
