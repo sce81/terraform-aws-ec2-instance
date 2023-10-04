@@ -5,6 +5,7 @@ resource "aws_instance" "main" {
   key_name                = var.key_name
   user_data               = var.user_data
   iam_instance_profile    = aws_iam_instance_profile.main.id
+  //vpc_security_group_ids  = [aws_security_group.main.id]
 
   network_interface {
     network_interface_id = aws_network_interface.main.id
@@ -25,7 +26,7 @@ resource "aws_instance" "main" {
 
 resource "aws_network_interface" "main" {
   subnet_id = element(data.aws_subnets.main.ids, 0)
-  //security_groups                       = var.security_group_ids
+  security_groups                       = [aws_security_group.main.id]
   source_dest_check = var.source_dest_check
 
   tags = merge(
@@ -38,13 +39,13 @@ resource "aws_network_interface" "main" {
 }
 
 resource "aws_iam_instance_profile" "main" {
-  name = "${var.project}_${var.env_name}_${var.name}_profile"
+  name = "${var.env_name}_${var.name}_profile"
   role = aws_iam_role.main.name
 }
 
 
 resource "aws_iam_role" "main" {
-  name               = "${var.project}_${var.env_name}_${var.name}_role"
+  name               = "${var.env_name}_${var.name}_role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
