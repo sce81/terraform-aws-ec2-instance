@@ -14,7 +14,7 @@ resource "aws_instance" "main" {
   tags = merge(
     local.common_tags, var.extra_tags,
     tomap({
-      Name = "${var.env_name}-${var.project}-${var.name}-${var.number}"
+      Name = "${var.env_name}-${var.name}-${var.number}"
     })
   )
 
@@ -31,7 +31,7 @@ resource "aws_network_interface" "main" {
   tags = merge(
     local.common_tags, var.extra_tags,
     tomap({
-      Name = "${var.env_name}-${var.project}-${var.name}-${var.number}"
+      Name = "${var.env_name}-${var.name}-${var.number}"
     })
   )
 
@@ -64,7 +64,7 @@ EOF
 
 resource "aws_iam_role_policy" "main" {
   count  = var.iam_role_policy == {} ? 0 : 1
-  name   = "${var.project}_${var.env_name}_${var.name}_policy"
+  name   = "${var.env_name}_${var.name}_policy"
   policy = var.iam_role_policy
   role   = aws_iam_role.main.name
 }
