@@ -1,12 +1,11 @@
-
 resource "aws_instance" "main" {
   ami                     = var.ami_id
   instance_type           = var.instance_type
   disable_api_termination = var.disable_api_termination
   key_name                = var.key_name
-  user_data_base64        = base64encode(var.user_data)
+  user_data               = var.user_data
   iam_instance_profile    = aws_iam_instance_profile.main.id
-
+  //  vpc_security_group_ids  = [aws_security_group.main.id]
 
   network_interface {
     network_interface_id = aws_network_interface.main.id
@@ -16,7 +15,7 @@ resource "aws_instance" "main" {
   tags = merge(
     local.common_tags, var.extra_tags,
     tomap({
-      Name = "${var.name}-${var.env}-${var.number}"
+      Name = "${var.env_name}-${var.name}-${var.number}"
     })
   )
 
@@ -33,52 +32,48 @@ resource "aws_network_interface" "main" {
   tags = merge(
     local.common_tags, var.extra_tags,
     tomap({
-      Name = "${var.name}-${var.env}-${var.number}"
+      Name = "${var.env_name}-${var.name}-${var.number}"
     })
   )
 
-}
-
-
-resource "aws_eip" "public" {
-  count             = var.enable_eip == true ? 1 : 0
-  domain            = "vpc"
-  network_interface = aws_network_interface.main.id
-
-  tags = merge(
-    local.common_tags, var.extra_tags,
-    tomap({
-      Name = "${var.name}-${var.env}-eip"
-    })
-  )
-  depends_on = [
-    aws_instance.main
-  ]
 }
 
 resource "aws_iam_instance_profile" "main" {
-  name = "${var.name}-${var.env}-profile"
+  name = "${var.env_name}_${var.name}_profile"
   role = aws_iam_role.main.name
 }
 
 
 resource "aws_iam_role" "main" {
-  name = "${var.name}-${var.env}-iam-role"
-
-  assume_role_policy = <<POLICY
+  name               = "${var.env_name}_${var.name}_role"
+  assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Effect": "Allow",
+      "Action": "sts:AssumeRole",
       "Principal": {
         "Service": "ec2.amazonaws.com"
       },
-      "Action": "sts:AssumeRole"
+      "Effect": "Allow",
+      "Sid": ""
     }
   ]
 }
-POLICY
+EOF
+}
+
+resource "aws_iam_role_policy" "main" {
+  count  = var.iam_role_policy == {} ? 0 : 1
+  name   = "${var.env_name}_${var.name}_policy"
+  policy = var.iam_role_policy
+  role   = aws_iam_role.main.name
+}
+
+resource "aws_iam_role_policy_attachment" "main" {
+  count      = length(var.managed_iam_policy)
+  role       = aws_iam_role.main.name
+  policy_arn = element(var.managed_iam_policy, count.index)
 }
 
 resource "aws_iam_role_policy_attachment" "managed-AmazonEC2RoleforSSM" {
@@ -87,27 +82,22 @@ resource "aws_iam_role_policy_attachment" "managed-AmazonEC2RoleforSSM" {
   role       = aws_iam_role.main.name
 }
 
-resource "aws_iam_role_policy_attachment" "managed-IAM-Roles" {
-  count      = length(var.managed_iam_policy)
-  policy_arn = element(var.managed_iam_policy, count.index)
-  role       = aws_iam_role.main.name
-}
 
 resource "aws_security_group" "main" {
-  name        = "${var.name}-${var.env}-sg"
+  name        = "${var.name}-${var.env_name}-sg"
   description = "Instance Security Group"
   vpc_id      = data.aws_vpc.main.id
 
   egress {
-    from_port   = var.egress_from_port
-    to_port     = var.egress_to_port
-    protocol    = var.egress_protocol
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
-    Name        = "${var.name}-${var.env}-sg"
-    Environment = "${var.env}"
+    Name        = "${var.name}-${var.env_name}-sg"
+    Environment = "${var.env_name}"
   }
 }
 
