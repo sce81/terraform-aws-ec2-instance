@@ -5,12 +5,12 @@ resource "aws_instance" "main" {
   key_name                = var.key_name
   user_data               = var.user_data
   iam_instance_profile    = aws_iam_instance_profile.main.id
-  //vpc_security_group_ids  = [aws_security_group.main.id]
+  vpc_security_group_ids  = [aws_security_group.main.id]
 
-  network_interface {
-    network_interface_id = aws_network_interface.main.id
-    device_index         = 0
-  }
+//  network_interface {
+//    network_interface_id = aws_network_interface.main.id
+//    device_index         = 0
+//  }
 
   tags = merge(
     local.common_tags, var.extra_tags,
@@ -24,19 +24,19 @@ resource "aws_instance" "main" {
   }
 }
 
-resource "aws_network_interface" "main" {
-  subnet_id = element(data.aws_subnets.main.ids, 0)
-  security_groups                       = [aws_security_group.main.id]
-  source_dest_check = var.source_dest_check
-
-  tags = merge(
-    local.common_tags, var.extra_tags,
-    tomap({
-      Name = "${var.env_name}-${var.name}-${var.number}"
-    })
-  )
-
-}
+//resource "aws_network_interface" "main" {
+//  subnet_id = element(data.aws_subnets.main.ids, 0)
+//  security_groups                       = [aws_security_group.main.id]
+//  source_dest_check = var.source_dest_check
+//
+//  tags = merge(
+//    local.common_tags, var.extra_tags,
+//    tomap({
+//      Name = "${var.env_name}-${var.name}-${var.number}"
+//    })
+//  )
+//
+//}
 
 resource "aws_iam_instance_profile" "main" {
   name = "${var.env_name}_${var.name}_profile"
