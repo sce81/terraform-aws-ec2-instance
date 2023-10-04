@@ -4,7 +4,7 @@ resource "aws_instance" "main" {
   disable_api_termination = var.disable_api_termination
   key_name                = var.key_name
   user_data               = var.user_data
-  //iam_instance_profile                  = var.instance_profile
+  iam_instance_profile    = aws_iam_instance_profile.main.id
 
   network_interface {
     network_interface_id = aws_network_interface.main.id
