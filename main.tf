@@ -28,7 +28,7 @@ resource "aws_instance" "main" {
 resource "aws_network_interface" "main" {
   subnet_id         = element(data.aws_subnets.main.ids, 0)
   security_groups   = [aws_security_group.main.id]
-  source_dest_check = var.source_dest_check
+  //source_dest_check = var.source_dest_check
 
   tags = merge(
     local.common_tags, var.extra_tags,
