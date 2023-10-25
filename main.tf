@@ -11,6 +11,7 @@ resource "aws_instance" "main" {
     device_index         = 0
   }
 
+
   root_block_device {
     volume_size           = var.volume_size
     volume_type           = var.volume_type
@@ -19,7 +20,7 @@ resource "aws_instance" "main" {
   tags = merge(
     local.common_tags, var.extra_tags,
     tomap({
-      Name = "${var.name}-${var.env_name}"
+      Name = "${var.env_name}-${var.name}-${var.number}"
     })
   )
 
@@ -27,6 +28,7 @@ resource "aws_instance" "main" {
     ignore_changes = [user_data]
   }
 }
+
 
 resource "aws_network_interface" "main" {
   subnet_id         = data.aws_subnets.main.ids
@@ -40,7 +42,12 @@ resource "aws_network_interface" "main" {
     })
   )
 
+
+resource "aws_iam_instance_profile" "main" {
+  name = "${var.env_name}_${var.name}_profile"
+  role = aws_iam_role.main.name
 }
+
 
 resource "aws_eip" "public" {
   domain            = "vpc"
@@ -88,6 +95,7 @@ resource "aws_iam_role_policy_attachment" "managed-AmazonEC2RoleforSSM" {
   role       = aws_iam_role.main.name
 }
 
+
 resource "aws_security_group" "main" {
   name        = "${var.name}-${var.env_name}-sg"
   description = "Instance Security Group"
@@ -114,6 +122,6 @@ resource "aws_security_group_rule" "main" {
   protocol          = each.value.protocol
   type              = each.value.type
   description       = each.key
-  cidr_blocks       = [each.value.cidr_blocks]
+  cidr_blocks       = each.value.cidr_blocks
   security_group_id = aws_security_group.main.id
 }

@@ -1,3 +1,4 @@
+
 variable "ami_id" {
   type        = string
   description = "AMI ID of image to use"
@@ -10,6 +11,7 @@ variable "user_data" {
   type        = string
   description = "Userdata to execute on first instance startup"
 }
+
 variable "env_name" {
   type        = string
   description = "Name of environment for tagging purposes"
@@ -24,6 +26,7 @@ variable "name" {
 }
 variable "subnet_name" {
   type        = string
+
   description = "name identifier of vpc subnets to use for EKS worker deployment"
   default     = "private"
 }
@@ -42,11 +45,36 @@ variable "disable_api_termination" {
   description = "Disable API Termination to prevent accidental deletion"
   default     = true
 }
+
 variable "extra_tags" {
   type    = map(any)
   default = {}
 }
 variable "enable_eip" {
+  default = 0
+}
+variable "customer_owned_ipv4_pool" { default = null }
+variable "iam_role_policy" { default = {} }
+variable "managed_iam_policy" {
+  default = []
+  type    = list(string)
+}
+variable "enable_ssm" {
+  default = true
+  type    = bool
+}
+variable "ingress_rules" {
+  description = "map of security group rules for ec2 instances"
+  type = map(object({
+    from_port   = optional(string)
+    to_port     = optional(string)
+    protocol    = optional(string)
+    type        = optional(string)
+    description = optional(string)
+    cidr_blocks = optional(list(string))
+  }))
+  default = {}
+
   type        = bool
   description = "Enable public Elastic IP Address for Instance"
   default     = false
