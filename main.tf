@@ -1,3 +1,4 @@
+
 resource "aws_instance" "main" {
   ami                     = var.ami_id
   instance_type           = var.instance_type
@@ -6,17 +7,12 @@ resource "aws_instance" "main" {
   user_data               = var.user_data
   iam_instance_profile    = aws_iam_instance_profile.main.id
 
+
   network_interface {
     network_interface_id = aws_network_interface.main.id
     device_index         = 0
   }
 
-
-  root_block_device {
-    volume_size           = var.volume_size
-    volume_type           = var.volume_type
-    delete_on_termination = var.delete_on_termination
-  }
   tags = merge(
     local.common_tags, var.extra_tags,
     tomap({
@@ -29,18 +25,18 @@ resource "aws_instance" "main" {
   }
 }
 
-
 resource "aws_network_interface" "main" {
-  subnet_id         = data.aws_subnets.main.id
-  security_groups   = flatten([var.security_group_ids, aws_security_group.main.id])
-  //source_dest_check = var.source_dest_check
+  subnet_id         = element(data.aws_subnets.main.ids, 0)
+  security_groups   = [aws_security_group.main.id]
+  source_dest_check = var.source_dest_check
 
   tags = merge(
     local.common_tags, var.extra_tags,
     tomap({
-      Name = "${var.name}-${var.env_name}"
+      Name = "${var.env_name}-${var.name}-${var.number}"
     })
   )
+
 }
 
 
