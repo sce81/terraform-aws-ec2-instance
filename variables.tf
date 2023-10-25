@@ -16,6 +16,11 @@ variable "env_name" {
   type        = string
   description = "Name of environment for tagging purposes"
 }
+variable "number" {
+  type        = number
+  description = "Instance number in scenario of multiple"
+  default = 0
+}
 variable "vpc_name" {
   type        = string
   description = "Identifier of VPC to pass into data source"
@@ -58,26 +63,6 @@ variable "iam_role_policy" { default = {} }
 variable "managed_iam_policy" {
   default = []
   type    = list(string)
-}
-variable "enable_ssm" {
-  default = true
-  type    = bool
-}
-variable "ingress_rules" {
-  description = "map of security group rules for ec2 instances"
-  type = map(object({
-    from_port   = optional(string)
-    to_port     = optional(string)
-    protocol    = optional(string)
-    type        = optional(string)
-    description = optional(string)
-    cidr_blocks = optional(list(string))
-  }))
-  default = {}
-
-  type        = bool
-  description = "Enable public Elastic IP Address for Instance"
-  default     = false
 }
 
 variable "ingress_rules" {

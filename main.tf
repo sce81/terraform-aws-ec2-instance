@@ -31,7 +31,7 @@ resource "aws_instance" "main" {
 
 
 resource "aws_network_interface" "main" {
-  subnet_id         = data.aws_subnets.main.ids
+  subnet_id         = data.aws_subnets.main.id
   security_groups   = flatten([var.security_group_ids, aws_security_group.main.id])
   //source_dest_check = var.source_dest_check
 
@@ -41,11 +41,6 @@ resource "aws_network_interface" "main" {
       Name = "${var.name}-${var.env_name}"
     })
   )
-
-
-resource "aws_iam_instance_profile" "main" {
-  name = "${var.env_name}_${var.name}_profile"
-  role = aws_iam_role.main.name
 }
 
 

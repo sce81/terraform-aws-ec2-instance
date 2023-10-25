@@ -1,23 +1,3 @@
-data "aws_vpc" "main" {
-  filter {
-    name   = "tag:Name"
-    values = ["${var.vpc_name}-${var.env_name}-vpc"]
-  }
-}
-
-data "aws_subnets" "main" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.main.id]
-  }
-
-  filter {
-    name   = "tag:Name"
-    values = ["*-${var.subnet_name}*"]
-  }
-}
-
-
 locals {
   common_tags = {
 
@@ -43,6 +23,6 @@ data "aws_subnets" "main" {
 
   filter {
     name   = "tag:Name"
-    values = ["*-${var.subnet_name}-*"]
+    values = ["*-${var.subnet_name}*"]
   }
 }
