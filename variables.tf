@@ -115,3 +115,9 @@ variable "egress_to_port" {
   type        = number
   description = "restrict egress to specific port range, deaults to any"
 }
+
+variable "source_dest_check" {
+  default     = true
+  type        = bool
+  description = "restrict egress to specific port range, deaults to any"
+}
