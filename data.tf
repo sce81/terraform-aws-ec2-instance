@@ -5,7 +5,6 @@ locals {
     "Environment" = var.env_name
     "Terraform"   = "true"
   }
-
 }
 
 data "aws_vpc" "main" {

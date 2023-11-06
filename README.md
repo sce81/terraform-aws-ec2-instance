@@ -22,7 +22,7 @@ Includes example Terraform Testing Framework
 
 ## Terraform Test
 To execute `terraform test`, module requires a `*.tfvars` file for populating module configuration for test environment. Example below.  
-To execute terraform test, run `terraform init` from within the root folder and `terraform test *.tfvars` specifically referencing the tfvars for for use.
+To execute terraform test, run `terraform init` from within the root folder and `terraform test *.tfvars` specifically referencing the .tfvars for for use.
 NB: terraform test will deploy live resources to cloud environment.
 
     env_name               = "terraform"
