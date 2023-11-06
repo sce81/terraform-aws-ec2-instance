@@ -16,6 +16,11 @@ variable "env_name" {
   type        = string
   description = "Name of environment for tagging purposes"
 }
+variable "number" {
+  type        = number
+  description = "Instance number in scenario of multiple"
+  default     = 0
+}
 variable "vpc_name" {
   type        = string
   description = "Identifier of VPC to pass into data source"
@@ -25,7 +30,7 @@ variable "name" {
   description = "Name of EC2 Instance for tagging purposes"
 }
 variable "subnet_name" {
-  type        = string
+  type = string
 
   description = "name identifier of vpc subnets to use for EKS worker deployment"
   default     = "private"
@@ -59,12 +64,9 @@ variable "managed_iam_policy" {
   default = []
   type    = list(string)
 }
-variable "enable_ssm" {
-  default = true
-  type    = bool
-}
+
 variable "ingress_rules" {
-  description = "map of security group rules for ec2 instances"
+  description = "map of security group rules for eks nodes"
   type = map(object({
     from_port   = optional(string)
     to_port     = optional(string)
@@ -72,23 +74,6 @@ variable "ingress_rules" {
     type        = optional(string)
     description = optional(string)
     cidr_blocks = optional(list(string))
-  }))
-  default = {}
-
-  type        = bool
-  description = "Enable public Elastic IP Address for Instance"
-  default     = false
-}
-
-variable "ingress_rules" {
-  description = "map of security group rules for eks nodes"
-  type = map(object({
-    from_port    = optional(string)
-    to_port      = optional(string)
-    protocol     = optional(string)
-    type         = optional(string)
-    description  = optional(string)
-    cidr_blocks  = optional(list(string))
   }))
   default = {}
 }
@@ -128,5 +113,11 @@ variable "egress_from_port" {
 variable "egress_to_port" {
   default     = 0
   type        = number
+  description = "restrict egress to specific port range, deaults to any"
+}
+
+variable "source_dest_check" {
+  default     = true
+  type        = bool
   description = "restrict egress to specific port range, deaults to any"
 }
