@@ -21,15 +21,15 @@ Includes example Terraform Testing Framework
 
 
 ## Terraform Test
-To execute terraform test, module requires a *.tfvars file for populating module configuration. Example below.  
-To execute terraform test, run terraform init from within the root folder and terraform test *.tfvars
+To execute `terraform test`, module requires a `*.tfvars` file for populating module configuration for test environment. Example below.  
+To execute terraform test, run `terraform init` from within the root folder and terraform test *.tfvars
+NB: terraform test will deploy live resources to cloud environment.
 
     env_name               = "terraform"
     name                   = "test-framework"
     instance_type          = "t3.micro"
     vpc_name               = "demo-public-vpc"
     subnet_name            = "private"
-    vpc_cidr               = "10.0.0.0/16"
     ami_id                 = "ami-01234567890"
     key_name               = "testing-ssh-key"
     subnet_ids             = ["subnet-1234567890"]
