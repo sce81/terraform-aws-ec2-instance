@@ -1,22 +1,57 @@
-# tf-module-network-appliance
-Terraform module for creating a single EC2 instance - eg: a self managed Elasticsearch node.  
-Static ENI and optional EIP to allow for EC2 upgrades without changing the IP address.  
-Expects security groups and IAM roles to be created externally to the module.  
+# terraform-aws-ec2-instance
+Terraform module for creating a standalone EC2 instance with IAM and Security Groups.  
+Includes example Terraform Testing Framework
+
 
 
 ##### Usage
 
-    module "Instance" {
-      source                                        = "git@github.com:sce81/tf-module-ec2-instance.git"
-      count                                         = 1
-      number                                        = (count.index + 1)
-      env                                           = var.env
-      name                                          = var.name
-      project                                       = var.project
-      subnet_ids                                    = data.terraform_remote_state.infra.outputs.primary_subnet_ids
-      ami_id                                        = var.ami_id
-      key_name                                      = module.ssh_key.key_name
-      security_group_ids                            = [module.instance-sg.id]
-      user_data                                     = data.template_file.userdata.rendered
-      instance_profile                              = module.instance-iam.instance_profile
+    module "instance" {
+      source               = "git@github.com:sce81/terraform-aws-ec2-instance.git"
+      name                 = var.env
+      env_name             = var.name
+      project              = var.project
+      vpc_name             = var.vpc_name
+      subnet_name          = var.subnet_name
+      ami_id               = var.ami_id
+      key_name             = module.ssh_key.key_name
+      security_group_ids   = [module.instance-sg.id]
+      user_data            = data.template_file.userdata.rendered
     }
+
+
+## Terraform Test
+To execute `terraform test`, module requires a `*.tfvars` file for populating module configuration for test environment. Example below.  
+To execute terraform test, run `terraform init` from within the root folder and terraform test *.tfvars
+NB: terraform test will deploy live resources to cloud environment.
+
+    env_name               = "terraform"
+    name                   = "test-framework"
+    instance_type          = "t3.micro"
+    vpc_name               = "demo-public-vpc"
+    subnet_name            = "private"
+    ami_id                 = "ami-01234567890"
+    key_name               = "testing-ssh-key"
+    subnet_ids             = ["subnet-1234567890"]
+    user_data              = "echo 'Hello, world!'"
+    security_group_ids     = ["sg-1234567890"]
+
+Testing requires minimun Terraform version 1.6.0
+Testing also requires a provider.tf file to be created within the module. Omitted to prevent conflicts at root level. 
+
+
+    provider "aws" {
+      region = "eu-west-1"
+    }
+
+### Prerequisites
+
+Terraform ~> 1.6.0
+
+### Tested
+
+Terraform ~> 1.6.0
+
+### Outputs
+
+instance_id: value = aws_instance.main.id
