@@ -56,7 +56,8 @@ variable "extra_tags" {
   default = {}
 }
 variable "enable_eip" {
-  default = 0
+  type = bool
+  default = false
 }
 variable "customer_owned_ipv4_pool" { default = null }
 variable "iam_role_policy" { default = {} }

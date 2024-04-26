@@ -41,6 +41,7 @@ resource "aws_network_interface" "main" {
 
 
 resource "aws_eip" "public" {
+  count             = var.enable_eip == true ? 1 : 0
   domain            = "vpc"
   network_interface = aws_network_interface.main.id
 
