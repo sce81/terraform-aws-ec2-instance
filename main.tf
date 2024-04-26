@@ -16,7 +16,7 @@ resource "aws_instance" "main" {
   tags = merge(
     local.common_tags, var.extra_tags,
     tomap({
-      Name = "${var.env_name}-${var.name}-${var.number}"
+      Name = "${var.name}-${var.env}-${var.number}"
     })
   )
 
@@ -33,7 +33,7 @@ resource "aws_network_interface" "main" {
   tags = merge(
     local.common_tags, var.extra_tags,
     tomap({
-      Name = "${var.env_name}-${var.name}-${var.number}"
+      Name = "${var.name}-${var.env}-${var.number}"
     })
   )
 
@@ -41,13 +41,14 @@ resource "aws_network_interface" "main" {
 
 
 resource "aws_eip" "public" {
+  count             = var.enable_eip == true ? 1 : 0
   domain            = "vpc"
   network_interface = aws_network_interface.main.id
 
   tags = merge(
     local.common_tags, var.extra_tags,
     tomap({
-      Name = "${var.name}-${var.env_name}-eip"
+      Name = "${var.name}-${var.env}-eip"
     })
   )
   depends_on = [
@@ -56,13 +57,13 @@ resource "aws_eip" "public" {
 }
 
 resource "aws_iam_instance_profile" "main" {
-  name = "${var.name}-${var.env_name}-profile"
+  name = "${var.name}-${var.env}-profile"
   role = aws_iam_role.main.name
 }
 
 
 resource "aws_iam_role" "main" {
-  name = "${var.name}-${var.env_name}-iam-role"
+  name = "${var.name}-${var.env}-iam-role"
 
   assume_role_policy = <<POLICY
 {
@@ -88,7 +89,7 @@ resource "aws_iam_role_policy_attachment" "managed-AmazonEC2RoleforSSM" {
 
 
 resource "aws_security_group" "main" {
-  name        = "${var.name}-${var.env_name}-sg"
+  name        = "${var.name}-${var.env}-sg"
   description = "Instance Security Group"
   vpc_id      = data.aws_vpc.main.id
 
@@ -100,8 +101,8 @@ resource "aws_security_group" "main" {
   }
 
   tags = {
-    Name        = "${var.name}-${var.env_name}-sg"
-    Environment = "${var.env_name}"
+    Name        = "${var.name}-${var.env}-sg"
+    Environment = "${var.env}"
   }
 }
 

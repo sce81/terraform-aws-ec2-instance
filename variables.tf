@@ -12,7 +12,7 @@ variable "user_data" {
   description = "Userdata to execute on first instance startup"
 }
 
-variable "env_name" {
+variable "env" {
   type        = string
   description = "Name of environment for tagging purposes"
 }
@@ -56,7 +56,8 @@ variable "extra_tags" {
   default = {}
 }
 variable "enable_eip" {
-  default = 0
+  type = bool
+  default = false
 }
 variable "customer_owned_ipv4_pool" { default = null }
 variable "iam_role_policy" { default = {} }

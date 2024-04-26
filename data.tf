@@ -1,8 +1,8 @@
 locals {
   common_tags = {
 
-    "Name"        = "${var.name}-${var.env_name}"
-    "Environment" = var.env_name
+    "Name"        = "${var.name}-${var.env}"
+    "Environment" = var.env
     "Terraform"   = "true"
   }
 }
