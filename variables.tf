@@ -12,7 +12,7 @@ variable "user_data" {
   description = "Userdata to execute on first instance startup"
 }
 
-variable "env_name" {
+variable "env" {
   type        = string
   description = "Name of environment for tagging purposes"
 }
