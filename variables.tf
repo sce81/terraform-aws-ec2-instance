@@ -48,7 +48,7 @@ variable "instance_type" {
 variable "disable_api_termination" {
   type        = bool
   description = "Disable API Termination to prevent accidental deletion"
-  default     = true
+  default     = false
 }
 
 variable "extra_tags" {

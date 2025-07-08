@@ -4,7 +4,7 @@ resource "aws_instance" "main" {
   instance_type           = var.instance_type
   disable_api_termination = var.disable_api_termination
   key_name                = var.key_name
-  user_data               = var.user_data
+  user_data_base64        = base64encode(var.user_data)
   iam_instance_profile    = aws_iam_instance_profile.main.id
 
 
