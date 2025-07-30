@@ -87,6 +87,11 @@ resource "aws_iam_role_policy_attachment" "managed-AmazonEC2RoleforSSM" {
   role       = aws_iam_role.main.name
 }
 
+resource "aws_iam_role_policy_attachment" "managed-IAM-Roles" {
+  count      = length(var.managed_iam_policy)
+  policy_arn = element(var.managed_iam_policy, count.index)
+  role       = aws_iam_role.main.name
+}
 
 resource "aws_security_group" "main" {
   name        = "${var.name}-${var.env}-sg"
