@@ -1,0 +1,15 @@
+desired_capacity   = "1"
+env_name           = "dev"
+k8s_version        = "1.25"
+name               = "tfc-automation"
+node_instance_type = "t3.medium"
+subnet_name        = "private"
+vpc_name           = "gateway"
+vpc_cidr           = "10.0.0.0/16"
+ami_id             = "ami-012df8b42af0ea7eb"
+key_name           = "demo-public-eks-ssh-key"
+user_data          = ""
+env                = "test"
+subnet_ids         = ["subnet-0c2a66fd6e03e4789"]
+instance_profile   = "test"
+security_group_ids = ["sg-0bc80596b878aea86"]
