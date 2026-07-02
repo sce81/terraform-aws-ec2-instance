@@ -60,9 +60,15 @@ variable "enable_eip" {
   default = false
 }
 variable "customer_owned_ipv4_pool" { default = null }
+variable "source_dest_check" {
+  type        = bool
+  description = "Whether source/destination checks are enabled on the primary network interface."
+  default     = true
+}
 variable "iam_role_policy" {
-  // type    = map(any)
-  default = {}
+  type        = string
+  description = "Optional inline IAM policy JSON to attach to the instance role."
+  default     = null
 }
 variable "managed_iam_policy" {
   default = []
@@ -72,8 +78,8 @@ variable "managed_iam_policy" {
 variable "ingress_rules" {
   description = "map of security group rules for eks nodes"
   type = map(object({
-    from_port   = optional(string)
-    to_port     = optional(string)
+    from_port   = optional(number)
+    to_port     = optional(number)
     protocol    = optional(string)
     type        = optional(string)
     description = optional(string)

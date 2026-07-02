@@ -64,13 +64,14 @@ No modules.
 | <a name="input_enable_ssm"></a> [enable\_ssm](#input\_enable\_ssm) | enable SSM for Worker Nodes | `bool` | `true` | no |
 | <a name="input_env"></a> [env](#input\_env) | Name of environment for tagging purposes | `string` | n/a | yes |
 | <a name="input_extra_tags"></a> [extra\_tags](#input\_extra\_tags) | n/a | `map(any)` | `{}` | no |
-| <a name="input_iam_role_policy"></a> [iam\_role\_policy](#input\_iam\_role\_policy) | n/a | `map` | `{}` | no |
-| <a name="input_ingress_rules"></a> [ingress\_rules](#input\_ingress\_rules) | map of security group rules for eks nodes | <pre>map(object({<br/>    from_port   = optional(string)<br/>    to_port     = optional(string)<br/>    protocol    = optional(string)<br/>    type        = optional(string)<br/>    description = optional(string)<br/>    cidr_blocks = optional(list(string))<br/>  }))</pre> | `{}` | no |
+| <a name="input_iam_role_policy"></a> [iam\_role\_policy](#input\_iam\_role\_policy) | Optional inline IAM policy JSON to attach to the instance role. | `string` | `null` | no |
+| <a name="input_ingress_rules"></a> [ingress\_rules](#input\_ingress\_rules) | map of security group rules for eks nodes | <pre>map(object({<br/>    from_port   = optional(number)<br/>    to_port     = optional(number)<br/>    protocol    = optional(string)<br/>    type        = optional(string)<br/>    description = optional(string)<br/>    cidr_blocks = optional(list(string))<br/>  }))</pre> | `{}` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | EC2 Instance compute class | `string` | `"t3.large"` | no |
 | <a name="input_key_name"></a> [key\_name](#input\_key\_name) | Name of AWS Managed SSH Key to use | `string` | n/a | yes |
 | <a name="input_managed_iam_policy"></a> [managed\_iam\_policy](#input\_managed\_iam\_policy) | n/a | `list(string)` | `[]` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of EC2 Instance for tagging purposes | `string` | n/a | yes |
 | <a name="input_number"></a> [number](#input\_number) | Instance number in scenario of multiple | `number` | `0` | no |
+| <a name="input_source_dest_check"></a> [source\_dest\_check](#input\_source\_dest\_check) | Whether source/destination checks are enabled on the primary network interface. | `bool` | `true` | no |
 | <a name="input_subnet_name"></a> [subnet\_name](#input\_subnet\_name) | name identifier of vpc subnets to use for EKS worker deployment | `string` | `"private"` | no |
 | <a name="input_user_data"></a> [user\_data](#input\_user\_data) | Userdata to execute on first instance startup | `string` | n/a | yes |
 | <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | Identifier of VPC to pass into data source | `string` | n/a | yes |
