@@ -66,31 +66,6 @@ resource "aws_eip" "public" {
   ]
 }
 
-resource "aws_iam_instance_profile" "main" {
-  name = "${var.name}-${var.env}-profile"
-  role = aws_iam_role.main.name
-}
-
-
-resource "aws_iam_role" "main" {
-  name = "${var.name}-${var.env}-iam-role"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-}
-
 resource "aws_iam_role_policy_attachment" "managed-AmazonEC2RoleforSSM" {
   count      = var.enable_ssm == true ? 1 : 0
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
