@@ -60,7 +60,10 @@ variable "enable_eip" {
   default = false
 }
 variable "customer_owned_ipv4_pool" { default = null }
-variable "iam_role_policy" { default = {} }
+variable "iam_role_policy" {
+ // type    = map(any)
+  default = {}
+}
 variable "managed_iam_policy" {
   default = []
   type    = list(string)
@@ -77,48 +80,4 @@ variable "ingress_rules" {
     cidr_blocks = optional(list(string))
   }))
   default = {}
-}
-
-
-variable "security_group_ids" {
-  default     = []
-  description = "addional security group IDs to pass to instance"
-  type        = list(any)
-}
-
-variable "volume_size" {
-  default     = 8
-  description = "size of EBS root volume"
-  type        = number
-}
-variable "volume_type" {
-  default     = "gp3"
-  description = "EBS Volume type"
-  type        = string
-}
-variable "delete_on_termination" {
-  default     = true
-  description = "automatically dlete root device when instance is destroyed"
-  type        = bool
-}
-variable "egress_protocol" {
-  default     = "-1"
-  description = "restrict egress to specific protocol, deaults to any"
-  type        = string
-}
-variable "egress_from_port" {
-  default     = 0
-  type        = number
-  description = "restrict egress to specific port range, deaults to any"
-}
-variable "egress_to_port" {
-  default     = 0
-  type        = number
-  description = "restrict egress to specific port range, deaults to any"
-}
-
-variable "source_dest_check" {
-  default     = true
-  type        = bool
-  description = "restrict egress to specific port range, deaults to any"
 }
