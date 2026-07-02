@@ -81,7 +81,7 @@ variable "ingress_rules" {
 
 variable "security_group_ids" {
   default     = []
-  description = "addional security group IDs to pass to instance"
+  description = "addional security group IDs to pass to instance security group"
   type        = list(any)
 }
 

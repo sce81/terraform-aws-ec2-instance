@@ -3,7 +3,7 @@
 
 //run "version_validation" {
 //  assert {
-//    condition     = terraform.required_version >= "1.0.0"
+//    condition     = terraform.required_version == "1.6.3"
 //    error_message = "Terraform version should be at least 1.0.0"
 //  }
 //}
