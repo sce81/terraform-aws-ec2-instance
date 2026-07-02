@@ -56,12 +56,12 @@ variable "extra_tags" {
   default = {}
 }
 variable "enable_eip" {
-  type = bool
+  type    = bool
   default = false
 }
 variable "customer_owned_ipv4_pool" { default = null }
 variable "iam_role_policy" {
- // type    = map(any)
+  // type    = map(any)
   default = {}
 }
 variable "managed_iam_policy" {

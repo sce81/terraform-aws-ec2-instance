@@ -7,7 +7,7 @@ variables {
     "Environment" = "testing"
     "Terraform"   = "true"
   }
-  vpc_name = "vpc-0a9b066cdcc600c19"
+  vpc_name    = "vpc-0a9b066cdcc600c19"
   subnet_name = "subnet-0c2a66fd6e03e4789"
 }
 

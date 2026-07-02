@@ -2,25 +2,25 @@
 # WARNING: Generated module tests should be considered experimental and be reviewed by the module author.
 
 variables {
-  ami_id = "ami-090f43bfef67db145"
-  instance_type = "t2.micro"
+  ami_id                  = "ami-090f43bfef67db145"
+  instance_type           = "t2.micro"
   disable_api_termination = true
-  key_name = "demo-public-eks-ssh-key"
-  user_data = "echo 'Hello, world!'"
-  env_name = "test"
-  number = 0
-  vpc_name = "demo-public-vpc"
-  name = "test-instance"
-  subnet_name = "subnet-123456"
-  enable_ssm = true
-  subnet_ids         = ["subnet-0c2a66fd6e03e4789"]
-  security_group_ids = ["sg-0bc80596b878aea86"]
+  key_name                = "demo-public-eks-ssh-key"
+  user_data               = "echo 'Hello, world!'"
+  env_name                = "test"
+  number                  = 0
+  vpc_name                = "demo-public-vpc"
+  name                    = "test-instance"
+  subnet_name             = "subnet-123456"
+  enable_ssm              = true
+  subnet_ids              = ["subnet-0c2a66fd6e03e4789"]
+  security_group_ids      = ["sg-0bc80596b878aea86"]
   extra_tags = {
     "Extra" = "Tag"
   }
-  egress_protocol = "-1"
+  egress_protocol  = "-1"
   egress_from_port = 0
-  egress_to_port = 0
+  egress_to_port   = 0
 }
 
 run "resource_validation" {
